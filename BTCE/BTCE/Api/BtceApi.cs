@@ -12,39 +12,29 @@ namespace BTCE.Api
 {
     public class BtceApi
     {
-        private static readonly TradePair[] AllPairs;
         private const string BtceUrl = "https://btc-e.nz/api/2/";
-        static BtceApi()
-        {
-            AllPairs = TradePair.AllPairs;
-        }
-        public BtceApi()
-        {
-            
-        }
 
-        private static string TickerUrl(string tradeType) => Path.Combine(BtceUrl, tradeType, "ticker");
-        private static string FeeUrl(string tradeType) => Path.Combine(BtceUrl, tradeType, "fee");
+        private static string TickerUrl(string tradeType) => 
+            Path.Combine(BtceUrl, tradeType, "ticker");
+        private static string FeeUrl(string tradeType) =>
+            Path.Combine(BtceUrl, tradeType, "fee");
         private static string Get(string url)
         {
             //TODO Something wrong with get responce on ssl/ tls connection
-            var req = WebRequest.Create(url);
-            var resp = req.GetResponse();
-            var stream = resp.GetResponseStream();
+            var stream = WebRequest.Create(url)
+                .GetResponse()
+                .GetResponseStream();
             using (var sr = new StreamReader(stream))
             {
                 return sr.ReadToEnd();
             }
         }
 
-        public Ticker GetTicker(TradePair pair)
+        public static Ticker GetTicker(TradePair pair)
         {
             var url = TickerUrl(pair.ToString());
             var json = Get(url);
             return JsonTicker.Parse(json);
         }
-
-        
-
     }
 }

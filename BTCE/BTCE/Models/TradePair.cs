@@ -5,6 +5,7 @@ namespace BTCE.Models
 {
     public class TradePair
     {
+
         public TradePair()
         {
         }
@@ -40,5 +41,18 @@ namespace BTCE.Models
         public override string ToString() =>
             From.ToString() + To;
 
+        public override bool Equals(object obj) =>
+            obj is TradePair && Equals((TradePair) obj);
+
+        protected bool Equals(TradePair other) => 
+            From == other.From && To == other.To;
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((int) From*397) ^ (int) To;
+            }
+        }
     }
 }
