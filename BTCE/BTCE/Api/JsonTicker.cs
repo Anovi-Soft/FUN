@@ -4,26 +4,27 @@ using Newtonsoft.Json;
 
 namespace BTCE.Api
 {
-    public class JsonTicker
+    public class JsonTicker : BtceJson
     {
         [JsonProperty("ticker")]
         public Ticker Ticker { get; set; }
 
-        [JsonProperty("error")]
-        public string Error { get; set; }
-
         public static Ticker Parse(string json)
         {
             var result = JsonConvert.DeserializeObject<JsonTicker>(json);
-            if (result.Error != null)
+            if (result.IsIncorrect)
                 throw new ArgumentException(result.Error);
             return result.Ticker;
         }
 
-        public static bool TryParse(string json, ref Ticker ticker)
+        public static bool TryParse(string json, out Ticker ticker)
         {
             var result = JsonConvert.DeserializeObject<JsonTicker>(json);
-            if (result.Error != null) return false;
+            if (result.IsIncorrect)
+            {
+                ticker = null;
+                return false;
+            }
             ticker = result.Ticker;
             return true;
         }

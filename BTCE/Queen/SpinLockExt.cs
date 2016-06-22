@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Queen
 {
-    class SpinLockExt:IDisposable
+    class SpinLockExt : IDisposable
     {
-        private readonly SpinLock spinLock;
+        private SpinLock spinLock;
         private bool lockTaken;
         public SpinLockExt(SpinLock spinLock)
         {

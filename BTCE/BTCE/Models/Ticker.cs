@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
+using NUnit.Framework.Constraints;
 
 namespace BTCE.Models
 {
@@ -72,10 +73,11 @@ namespace BTCE.Models
                 hashCode = (hashCode * 397) ^ Last.GetHashCode();
                 hashCode = (hashCode * 397) ^ Buy.GetHashCode();
                 hashCode = (hashCode * 397) ^ Sell.GetHashCode();
-                hashCode = (hashCode * 397) ^ (int)Updated;
-                hashCode = (hashCode * 397) ^ (int)ServerTime;
                 return hashCode;
             }
         }
+
+        public bool UpdateMe(Ticker potencialGreather) =>
+             Updated < potencialGreather.Updated && !Equals(potencialGreather);
     }
 }
